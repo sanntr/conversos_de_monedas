@@ -1,28 +1,36 @@
 package com.alulara.modules;
 
-import com.google.gson.Gson;
+
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
+import io.github.cdimascio.dotenv.Dotenv;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Map;
 
 
 public class Api {
-    private Gson gson = new Gson();
-    public JsonObject conectionApi() throws IOException, InterruptedException {
+    public JsonElement conectionApi() throws IOException, InterruptedException {
+        Dotenv dotenv = Dotenv.configure()
+                .directory("src/com/alulara/modules/")
+                .load();
+        String key=dotenv.get("API_KEY");
+
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://v6.exchangerate-api.com/v6/05ceaf62bad8e0552ef87fc9/latest/USD"))
+                .uri(URI.create("https://v6.exchangerate-api.com/v6/"+key+"/latest/USD"))
                 .build();
         HttpResponse<String> response = client
                 .send(request, HttpResponse.BodyHandlers.ofString());
-
-        JsonObject monedas = JsonParser.parseString(response.body()).getAsJsonObject();
-        System.out.println(monedas.get("conversion_rates"));
-        return monedas;
+        return JsonParser.parseString(response.body()).getAsJsonObject();
     }
+
+
+
+
+
 }

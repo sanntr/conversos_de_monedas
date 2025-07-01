@@ -1,4 +1,5 @@
 import com.alulara.modules.Api;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
 
@@ -7,6 +8,7 @@ public class Main {
         Api api = new Api();
         try {
             System.out.println(api.conectionApi());
+//            JsonObject cadena= (JsonObject) api.conectionApi();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
