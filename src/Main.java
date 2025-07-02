@@ -1,16 +1,9 @@
-import com.alulara.modules.Api;
-import com.google.gson.JsonObject;
+import com.alulara.interfaces.SolicitudUsuario;
 
-import java.io.IOException;
 
 public class Main {
     public static void main(String[] args){
-        Api api = new Api();
-        try {
-            System.out.println(api.conectionApi());
-//            JsonObject cadena= (JsonObject) api.conectionApi();
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        SolicitudUsuario solicitudUsuario = new SolicitudUsuario();
+        solicitudUsuario.convertirMoneda();
     }
 }

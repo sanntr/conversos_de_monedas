@@ -14,20 +14,42 @@ import java.util.Map;
 
 
 public class Api {
-    public JsonElement conectionApi() throws IOException, InterruptedException {
-        Dotenv dotenv = Dotenv.configure()
-                .directory("src/com/alulara/modules/")
-                .load();
-        String key=dotenv.get("API_KEY");
+    private Dotenv dotenv = Dotenv.configure()
+            .directory("src/com/alulara/modules/")
+            .load();
+    private  String key=dotenv.get("API_KEY");
 
+    public JsonElement conectionApi(){
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://v6.exchangerate-api.com/v6/"+key+"/latest/USD"))
                 .build();
-        HttpResponse<String> response = client
-                .send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = null;
+        try {
+            response = client
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException  |InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return JsonParser.parseString(response.body()).getAsJsonObject();
     }
+
+    public JsonElement codes(){
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://v6.exchangerate-api.com/v6/"+key+"/codes"))
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = client
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException  |InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return JsonParser.parseString(response.body()).getAsJsonObject();
+    }
+
 
 
 
